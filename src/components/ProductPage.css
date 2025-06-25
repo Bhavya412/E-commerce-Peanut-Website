@@ -1,0 +1,104 @@
+.page-container {
+  display: flex;
+  background-color: #fffaf3;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background-color: #fef3dc;
+  padding: 20px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+}
+
+.sidebar h4 {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #6b3e26;
+}
+
+.sidebar select,
+.sidebar input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd1b2;
+  background: #fffaf3;
+  font-size: 0.9rem;
+}
+
+
+.product-section {
+  margin-left: 240px;
+  flex: 1;
+  padding: 20px;
+}
+
+.top-links {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.top-links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #6b3e26;
+  font-weight: bold;
+}
+
+.product-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #6b3e26;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+.product-card {
+  height: 500px;
+  max-width: 300px;
+  background: white;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  overflow: hidden;
+}
+.product-card img {
+  height: 80%;
+  width: 100%;
+  object-fit: cover;
+}
+.product-info {
+  padding: 10px;
+  text-align: center;
+}
+.name {
+  font-weight: bold;
+  font-size: medium;
+  margin-bottom: 5px;
+}
+.price {
+  color: #d2691e;
+}
+.rating {
+  font-size: 0.9rem;
+  color: #555;
+}

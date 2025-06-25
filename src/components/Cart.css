@@ -1,0 +1,48 @@
+.cart-page {
+  padding: 2rem;
+}
+
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.cart-item-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.remove-btn {
+  background-color: crimson;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.checkout-btn {
+  margin-top: 1rem;
+  background-color: green;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
