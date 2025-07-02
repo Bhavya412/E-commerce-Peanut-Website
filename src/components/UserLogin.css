@@ -1,0 +1,80 @@
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.login-left {
+  width: 50%;
+  background-image: url('C:\Users\DINESH KUMAR MERUGA\Documents\Reactprojects\E-commerce-Peanut-Website\src\assets\vladislav-nikonov-13lLAWadKwU-unsplash.jpg'); 
+  background-size: cover;
+  background-position: center;
+}
+
+
+.login-right {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 3rem;
+}
+
+
+.user-login {
+  width: 100%;
+  max-width: 500px;
+}
+
+.user-login h2 {
+  text-align: left;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-login form input,
+.user-login form button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+.user-login form button[type="submit"] {
+  background-color: #d2691e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-login form button[type="submit"]:hover {
+  background-color: #d2691e;
+}
+
+
+.user-login p {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.user-login button[type="button"] {
+  background: none;
+  border: none;
+  color: #d2691e;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-left: 5px;
+  padding: 0;
+}

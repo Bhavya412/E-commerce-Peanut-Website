@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import ProductPage from './components/ProductPage';
 import ProductDetail from './components/ProductDetail';
+
 import { AuthProvider } from './components/AuthContext';
 import { CartProvider } from './components/CartContext'; 
 import Cart from './components/Cart'
+import UserLogin from './components/UserLogin';
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
             <Route path="/products" element={<ProductPage />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart/>}/>
+           <Route path="/userlogin" element={<UserLogin/>}/>
           </Routes>
         </Router>
       </CartProvider>

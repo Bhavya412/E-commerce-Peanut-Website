@@ -33,7 +33,6 @@
   font-size: 0.9rem;
 }
 
-
 .product-section {
   margin-left: 240px;
   flex: 1;
@@ -65,12 +64,12 @@
   gap: 24px;
 }
 
-
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
 }
+
 .product-card {
   height: 500px;
   max-width: 300px;
@@ -81,24 +80,31 @@
   border-radius: 0;
   overflow: hidden;
 }
+
 .product-card img {
   height: 80%;
   width: 100%;
   object-fit: cover;
 }
+
 .product-info {
   padding: 10px;
   text-align: center;
 }
+
 .name {
   font-weight: bold;
   font-size: medium;
   margin-bottom: 5px;
 }
+
 .price {
   color: #d2691e;
 }
+
 .rating {
   font-size: 0.9rem;
   color: #555;
 }
+
+

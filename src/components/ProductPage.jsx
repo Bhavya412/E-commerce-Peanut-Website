@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from './AuthContext'; // ✅ use context instead of Firebase Auth
 import './ProductPage.css';
 
 const productsData = [
@@ -43,6 +44,20 @@ function ProductPage() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortRating, setSortRating] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const { isLoggedIn, userEmail, logout } = useContext(AuthContext); // ✅ Use context
+
+  const handleLogout = () => {
+    logout(); // ✅ clears context state
+    navigate("/userlogin");
+  };
+
+  const getUserName = (email) => {
+    if (!email) return "";
+    const namePart = email.split("@")[0];
+    return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+  };
 
   const filteredProducts = productsData
     .filter(product => {
@@ -59,31 +74,65 @@ function ProductPage() {
   return (
     <div className="page-container">
       <aside className="sidebar">
-        <h4>Filter By</h4>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option>All</option>
-          <option value="Butter">Butter</option>
-          <option value="Nuts">Nuts</option>
-          <option value="Sweets">Sweets</option>
-          <option value="Oil">Oil</option>
-        </select>
+        <h4>Filters</h4>
 
-        <h4>Price</h4>
-        <input type="number" placeholder="Min" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
-        <input type="number" placeholder="Max" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+        <div className="filter-group">
+          <label>Category</label>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option>All</option>
+            <option value="Butter">Butter</option>
+            <option value="Nuts">Nuts</option>
+            <option value="Sweets">Sweets</option>
+            <option value="Oil">Oil</option>
+          </select>
+        </div>
 
-        <h4>Sort By Rating</h4>
-        <select value={sortRating} onChange={(e) => setSortRating(e.target.value)}>
-          <option value="">None</option>
-          <option value="high">High to Low</option>
-          <option value="low">Low to High</option>
-        </select>
+        <div className="filter-group">
+          <label>Price Range</label>
+          <input
+            type="number"
+            placeholder="Min"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Max"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+        </div>
+
+        <div className="filter-group">
+          <label>Sort by Rating</label>
+          <select value={sortRating} onChange={(e) => setSortRating(e.target.value)}>
+            <option value="">None</option>
+            <option value="high">High to Low</option>
+            <option value="low">Low to High</option>
+          </select>
+        </div>
       </aside>
 
       <main className="product-section">
         <div className="top-links">
-          <a href="/cart">Cart</a>
-          <a href="/login">Login</a>
+          <Link to="/cart">Cart</Link>
+          {isLoggedIn ? (
+            <div
+              className="user-dropdown"
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
+              <span className="greeting">Hi, {getUserName(userEmail)} 👋</span>
+              {showDropdown && (
+                <div className="dropdown-menu">
+                  <button onClick={() => navigate("/cart")}>Go to Cart</button>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/userlogin">Login</Link>
+          )}
         </div>
 
         <h2 className="product-heading">Our Peanut Products</h2>
@@ -98,7 +147,7 @@ function ProductPage() {
               <img src={product.image} alt={product.name} className="product-image" />
               <div className="product-info">
                 <p className="name">{product.name}</p>
-                <p className="price">${product.price}</p>
+                <p className="price">₹{product.price}</p>
                 <p className="rating">Rating: {product.rating}</p>
               </div>
             </div>
