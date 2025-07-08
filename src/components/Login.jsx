@@ -2,11 +2,12 @@
 import React, { useState, useContext } from 'react';
 import { ref, get, child } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
-import { db } from "../firebase"; // ✅ make sure it's lowercase
+import { db } from "../firebase";
 import { AuthContext } from './AuthContext';
 import './UserLogin.css';
 import ProductPage from './ProductPage';
 
+const ADMIN_EMAIL = "merugadinesh@gmail.com"; // 🔥 Set your admin email here
 
 const sanitize = email => email.replace(/[.#$[\]]/g, c =>
   ({ '.': '(dot)', '#': '(hash)', '$': '(dollar)', '[': '(open)', ']': '(close)' })[c]
@@ -19,7 +20,7 @@ const Login = ({ switchToSignup }) => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [msg, setMsg] = useState('');
-  const { login, setUserEmail } = useContext(AuthContext); // ✅ context holds login state
+  const { login, setUserEmail } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = async e => {
@@ -39,10 +40,18 @@ const Login = ({ switchToSignup }) => {
       } else {
         const user = snapshot.val();
         if (user.password === pass) {
-          login(email);               // ✅ call login from context
-          setUserEmail(email);        // ✅ save email to context
+          login(email);
+          setUserEmail(email);
           setMsg('Login successful!');
-          setTimeout(() => navigate("/products"), 500); // ✅ redirect
+
+          // 🔥 Check if it's the admin email
+          setTimeout(() => {
+            if (email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+              navigate("/admin"); // 🔥 Redirect to admin page
+            } else {
+              navigate("/products"); // 🔥 Normal user
+            }
+          }, 500);
         } else {
           setMsg('Incorrect password.');
         }
@@ -51,11 +60,7 @@ const Login = ({ switchToSignup }) => {
       console.error(err);
       setMsg('An error occurred. Please try again.');
     }
- 
-
   };
-
-  
 
   return (
     <div className="login-container">

@@ -115,7 +115,7 @@ function ProductPage() {
 
       <main className="product-section">
         <div className="top-links">
-          <Link to="/cart">Cart</Link>
+          {/* <Link to="/cart">Cart</Link> */}
           {isLoggedIn ? (
             <div
               className="user-dropdown"
