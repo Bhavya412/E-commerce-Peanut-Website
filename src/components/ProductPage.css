@@ -1,25 +1,36 @@
-.page-container {
-  display: flex;
-  background-color: #fffaf3;
-  min-height: 100vh;
+/* Base Layout */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #fffaf3;
+}
+
+/* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 220px;
+  width: 240px;
   height: 100vh;
   background-color: #fef3dc;
   padding: 20px;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
+  z-index: 1000;
+  transition: left 0.3s ease;
 }
 
 .sidebar h4 {
-  margin-top: 20px;
   font-size: 1rem;
   color: #6b3e26;
+  margin-bottom: 20px;
 }
 
 .sidebar select,
@@ -33,22 +44,61 @@
   font-size: 0.9rem;
 }
 
-.product-section {
+/* Main Content Right of Sidebar */
+.main-content {
   margin-left: 240px;
   flex: 1;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px; /* Add space between sidebar and content */
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fffaf3;
+  position: sticky;
+  top: 0;
+  z-index: 1200; /* Higher than sidebar */
+  border-bottom: 1px solid #f0e6d2;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #6b3e26;
+  cursor: pointer;
 }
 
 .top-links {
-  text-align: right;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Push links to right */
+  gap: 16px;
+  z-index: 1201;
+  background-color: #fffaf3; /* Ensure no overlap shows through */
 }
 
-.top-links a {
-  margin-left: 20px;
+.top-links a,
+.logout-button {
   text-decoration: none;
   color: #6b3e26;
   font-weight: bold;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Product Section */
+.product-section {
+  padding: 20px 20px 20px 20px;
+  margin-left: 20px; /* Add spacing between sidebar and products */
 }
 
 .product-heading {
@@ -60,25 +110,25 @@
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-.product-grid {
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
 }
 
+/* Product Card */
 .product-card {
-  height: 500px;
-  max-width: 300px;
   background: white;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  border-radius: 0;
+  cursor: pointer;
   overflow: hidden;
+  height: 500px;
+  max-width: 300px;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
 }
 
 .product-card img {
@@ -88,8 +138,8 @@
 }
 
 .product-info {
-  padding: 10px;
   text-align: center;
+  padding: 10px;
 }
 
 .name {
@@ -107,4 +157,32 @@
   color: #555;
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
 
+  .sidebar {
+    left: -100%;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .top-links {
+    margin-left: 0;
+    background-color: #fffaf3;
+  }
+}
