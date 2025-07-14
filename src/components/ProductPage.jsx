@@ -1,55 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from './AuthContext'; // ✅ use context instead of Firebase Auth
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { app } from '../Firebase';
+import { AuthContext } from './AuthContext';
 import './ProductPage.css';
 
-const productsData = [
-  {
-    id: 1,
-    name: "Organic Peanut Butter",
-    price: 250,
-    rating: 4.5,
-    category: "Butter",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgQ-iITouRZ6ZN5woDpmtWEauCARtMSQdQVQ&s",
-  },
-  {
-    id: 2,
-    name: "Roasted Peanuts",
-    price: 120,
-    rating: 4.2,
-    category: "Nuts",
-    image: "https://gladful.in/cdn/shop/files/Gladful_5.png?v=1698842499",
-  },
-  {
-    id: 3,
-    name: "Peanut Laddu",
-    price: 180,
-    rating: 4.8,
-    category: "Sweets",
-    image: "https://india.neelamfoodland.in/cdn/shop/products/IMG_9451_800x.jpg?v=1734379392",
-  },
-  {
-    id: 4,
-    name: "Cold Pressed Peanut Oil",
-    price: 450,
-    rating: 4.6,
-    category: "Oil",
-    image: "https://www.ulamart.com/media/catalog/product/cache/c75629cecc7438f26ce198480a02fd03/g/r/groundnutoil1-2_1.jpg",
-  },
-];
+const db = getFirestore(app); // ✅ Firestore instance
 
 function ProductPage() {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("All");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortRating, setSortRating] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { isLoggedIn, userEmail, logout } = useContext(AuthContext); // ✅ Use context
+  const { isLoggedIn, userEmail, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    logout(); // ✅ clears context state
+    logout();
     navigate("/userlogin");
   };
 
@@ -59,11 +29,30 @@ function ProductPage() {
     return namePart.charAt(0).toUpperCase() + namePart.slice(1);
   };
 
-  const filteredProducts = productsData
+  // ✅ Fetch product data from Firestore
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "products"));
+        const productList = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProducts(productList);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // ✅ Apply filters & sorting
+  const filteredProducts = products
     .filter(product => {
       return (category === "All" || product.category === category)
-        && (minPrice === "" || product.price >= parseFloat(minPrice))
-        && (maxPrice === "" || product.price <= parseFloat(maxPrice));
+        && (minPrice === "" || product.cost >= parseFloat(minPrice))
+        && (maxPrice === "" || product.cost <= parseFloat(maxPrice));
     })
     .sort((a, b) => {
       if (sortRating === "high") return b.rating - a.rating;
@@ -115,7 +104,6 @@ function ProductPage() {
 
       <main className="product-section">
         <div className="top-links">
-          {/* <Link to="/cart">Cart</Link> */}
           {isLoggedIn ? (
             <div
               className="user-dropdown"
@@ -144,14 +132,18 @@ function ProductPage() {
               key={product.id}
               onClick={() => navigate(`/products/${product.id}`, { state: product })}
             >
-              <img src={product.image} alt={product.name} className="product-image" />
+              <img src={product.image1} alt={product.name} className="product-image" />
               <div className="product-info">
                 <p className="name">{product.name}</p>
-                <p className="price">₹{product.price}</p>
+                <p className="price">₹{product.cost}</p>
                 <p className="rating">Rating: {product.rating}</p>
               </div>
             </div>
           ))}
+
+          {filteredProducts.length === 0 && (
+            <p className="no-products">No products found with selected filters.</p>
+          )}
         </div>
       </main>
     </div>

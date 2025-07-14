@@ -1,11 +1,13 @@
 // Login.jsx
 import React, { useState, useContext } from 'react';
+
 import { ref, get, child } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
-import { db } from "../firebase";
+import { rtdb } from "../Firebase";
 import { AuthContext } from './AuthContext';
 import './UserLogin.css';
 import ProductPage from './ProductPage';
+import { getFirestore } from 'firebase/firestore';
 
 const ADMIN_EMAIL = "merugadinesh@gmail.com"; // 🔥 Set your admin email here
 
@@ -30,7 +32,7 @@ const Login = ({ switchToSignup }) => {
     if (!isValidEmail(email)) return setMsg('Invalid email format.');
     if (pass.length < 6) return setMsg('Password must be at least 6 characters.');
 
-    const userRef = ref(db);
+    const userRef = ref(rtdb);
     const userPath = `users/${key}`;
 
     try {
